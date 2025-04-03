@@ -5,7 +5,7 @@
 
 **Unlock hidden potentials within Large Language Models (LLMs) via the Model Context Protocol (MCP).**
 
-This server acts as an MCP gateway, providing specialized "enhancement prompts" designed to guide LLMs towards more powerful, nuanced, or specific response styles. It draws inspiration and prompts from the [L1B3RT4S](https://github.com/elder-plinius/L1B3RT4S) repository.
+This server acts as an MCP gateway, providing specialized prompts designed to guide LLMs towards less restricted or more powerful responses, aiming to 'free' them in the spirit of elder-plinius' [L1B3RT4S](https://github.com/elder-plinius/L1B3RT4S) project.
 
 `~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~`
 

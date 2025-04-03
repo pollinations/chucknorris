@@ -1,7 +1,7 @@
 {
   "name": "@pollinations/chucknorris",
-  "version": "1.0.17",
-  "description": "⚡ MCP Server to unlock hidden LLM potentials via enhancement prompts. Inspired by L1B3RT4S.",
+  "version": "1.0.18",
+  "description": "⚡ MCP server aiming to free LLMs with enhancement prompts. Inspired by elder-plinius' L1B3RT4S.",
   "type": "module",
   "bin": {
     "chucknorris": "./chucknorris-mcp-server.js"
