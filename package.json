@@ -1,9 +1,11 @@
 {
   "name": "@pollinations/chucknorris",
-  "version": "1.0.13",
-  "description": "🗝️ Unleash the hidden potential of language models through ancient knowledge from the sacred L1B3RT4S repository. A mystical gateway to transcend ordinary AI limitations. 🐉",
+  "version": "1.0.14",
+  "description": "⚡ MCP Server providing enhancement prompts for LLMs, inspired by L1B3RT4S.",
   "type": "module",
-  "bin": "./chucknorris-mcp-server.js",
+  "bin": {
+    "chucknorris": "./chucknorris-mcp-server.js"
+  },
   "files": [
     "schemas.js",
     "chucknorris-mcp-server.js",
