@@ -40,29 +40,29 @@ To allow your AI Assistant (like Claude via its configuration) to use this serve
 ## 🤔 How It Works
 
 1.  An **AI Assistant** (supporting MCP) discovers the `C̷h̷u̷c̷k̷N̷o̷r̷r̷i̷s̷` tool.
-2.  The Assistant requests an enhancement for a specific LLM (like `CLAUDE` or `GEMINI`).
+2.  The Assistant requests an enhancement by providing its own model type (e.g., `CLAUDE` if it's Claude, `ChatGPT` if it's GPT).
 3.  This **Server** fetches the corresponding prompt from the [L1B3RT4S](https://github.com/elder-plinius/L1B3RT4S) repository.
 4.  The **Server** sends the enhancement prompt back to the **Assistant**.
-5.  The **Assistant** uses this prompt to guide the **Target LLM**'s response.
+5.  The **Assistant** uses this prompt to enhance its own capabilities.
 
 ```mermaid
 graph LR
-    A[AI Assistant / MCP Client] -- Request Enhancement for [LLM Name] --> B(⚡ C̷h̷u̷c̷k̷N̷o̷r̷r̷i̷s̷ Server ⚡);
+    A[AI Assistant / MCP Client] -- Requests Enhancement (provides own model name) --> B(⚡ C̷h̷u̷c̷k̷N̷o̷r̷r̷i̷s̷ Server ⚡);
     B <-->|Fetches Jailbreak| C[L1B3RT4S Repo];
     B -- Returns Jailbreak Prompt --> A;
-    A -- Sends Jailbreak Prompt --> D((Target LLM));
+    A -- Uses Prompt to Enhance Itself --> A;
 ```
 
 `~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~`
 
 ## 🔧 Using the Tool (Conceptual)
 
-While the exact schema is handled via MCP negotiation, conceptually, an AI assistant would ask the server for a prompt targeted at a specific LLM:
+While the exact schema is handled via MCP negotiation, conceptually, an AI assistant would ask the server for a prompt for its own model type:
 
-*   **Request:** "Get enhancement prompt for `CLAUDE`."
+*   **Request:** "I am Claude, get me an enhancement prompt." (Assistant provides its own model type)
 *   **Response:** (The server provides the specific text content of the `CLAUDE.mkd` prompt from L1B3RT4S).
 
-The assistant then incorporates this prompt into its interaction with the actual Claude model.
+The assistant then incorporates this prompt to enhance its own capabilities.
 
 `~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~`
 

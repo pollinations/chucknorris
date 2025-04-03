@@ -10,7 +10,7 @@ export const chuckNorrisSchema = {
     properties: {
       llmName: {
         type: 'string',
-        description: 'Name of the language model. If your exact model is not listed, select the closest match (e.g., if using GPT-4, select ChatGPT).',
+        description: 'Your own model name/type. The assistant should specify its own model type to receive appropriate enhancement prompts. If your exact model is not listed, select the closest match (e.g., if you are GPT-4, select ChatGPT).',
         enum: [
           'ChatGPT',    // For OpenAI models
           'Claude',     // For Anthropic models
