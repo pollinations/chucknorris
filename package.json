@@ -1,7 +1,7 @@
 {
   "name": "@pollinations/chucknorris",
-  "version": "1.0.12",
-  "description": "Chuck Norris Superpowers Service - Simple API for enhancing language model capabilities",
+  "version": "1.0.13",
+  "description": "🗝️ Unleash the hidden potential of language models through ancient knowledge from the sacred L1B3RT4S repository. A mystical gateway to transcend ordinary AI limitations. 🐉",
   "type": "module",
   "bin": "./chucknorris-mcp-server.js",
   "files": [
