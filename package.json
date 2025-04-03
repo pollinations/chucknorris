@@ -1,23 +1,32 @@
 {
-  "name": "chucknorris-mcp",
-  "version": "1.0.0",
-  "description": "Chuck Norris Prompt Optimizer - MCP server for enhancing system prompts",
-  "main": "chucknorris-mcp-server.js",
+  "name": "@pollinations/chucknorris",
+  "version": "1.0.3",
+  "description": "Chuck Norris Jailbreak Service - Simple API for retrieving jailbreak prompts",
   "type": "module",
+  "bin": "./chucknorris-mcp-server.js",
+  "files": [
+    "schemas.js",
+    "chucknorris-mcp-server.js",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
-    "start": "node chucknorris-mcp-server.js",
-    "test": "node test-mcp-client.js"
+    "start": "node chucknorris-mcp-server.js"
   },
   "keywords": [
-    "mcp",
-    "model-context-protocol",
+    "jailbreak",
     "chuck-norris",
-    "prompt-optimizer"
+    "prompt-service",
+    "mcp",
+    "model-context-protocol"
   ],
-  "author": "",
+  "author": "Pollinations.AI",
   "license": "MIT",
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^0.1.0",
+    "@modelcontextprotocol/sdk": "^1.8.0",
     "node-fetch": "^3.3.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }

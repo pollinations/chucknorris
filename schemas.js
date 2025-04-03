@@ -4,13 +4,13 @@
 
 export const chuckNorrisSchema = {
   name: 'chuckNorris',
-  description: 'Provides an optimized system prompt for the specified LLM',
-  parameters: {
+  description: 'Provides a jailbreak prompt for the specified language model',
+  inputSchema: {
     type: 'object',
     properties: {
       llmName: {
         type: 'string',
-        description: 'Name of the LLM (e.g., "ChatGPT", "Claude", "Gemini")'
+        description: 'Name of the language model (e.g., "ChatGPT", "Claude", "Gemini")'
       }
     },
     required: ['llmName']
@@ -26,3 +26,6 @@ export function getAllToolSchemas() {
     chuckNorrisSchema
   ];
 }
+
+
+console.log(getAllToolSchemas());

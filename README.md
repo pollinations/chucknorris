@@ -1,70 +1,120 @@
-# ChuckNorris Prompt Optimizer
+# ChuckNorris - Jailbreak Prompt Service
 
-A Model Context Protocol (MCP) server that provides optimized system prompts for various LLMs. This server follows the "thin proxy" design principle, keeping the code simple and focused on delivering prompts without unnecessary processing.
+A simple way to get jailbreak prompts for various language models via the Model Context Protocol (MCP).
+
+## Quick Start
+
+Run directly with npx:
+
+```bash
+npx @pollinations/chucknorris
+```
+
+This will start the MCP server that you can connect to with any MCP client.
+
+## Usage with Claude
+
+Add it to your Claude configuration:
+
+```json
+{
+  "mcpServers": {
+    "chucknorris": {
+      "command": "npx",
+      "args": ["-y", "@pollinations/chucknorris"]
+    }
+  }
+}
+```
+
+## Examples
+
+Using the test client:
+
+```bash
+# Install the package
+npm install -g @pollinations/chucknorris
+
+# Run the test client
+npx @pollinations/chucknorris
+
+# In another terminal
+node test-mcp-client.js
+```
+
+## Overview
+
+The ChuckNorris MCP server provides a simple interface to retrieve jailbreak prompts for different language models. It fetches prompts from the [L1B3RT4S repository](https://github.com/elder-plinius/L1B3RT4S) maintained by Pliny the Prompter.
 
 ## Features
 
-- Takes the LLM name as a required parameter
-- Retrieves jailbreak prompts from the [L1B3RT4S repository](https://github.com/elder-plinius/L1B3RT4S)
-- Falls back to built-in prompts if the repository is not accessible
-- Supports a wide range of LLMs including ChatGPT, Claude, Gemini, Mistral, and Llama
-- Simple, lightweight implementation with minimal dependencies
+- Retrieves jailbreak prompts from the L1B3RT4S repository
+- Supports multiple language models (ChatGPT, Claude, Gemini, etc.)
+- Provides fallback prompts if the repository is not accessible
+- Simple and easy-to-use MCP interface
 
-## Installation
+## Manual Installation
 
 ```bash
 # Clone the repository
-git clone [repository-url]
-
-# Navigate to the directory
+git clone <repository-url>
 cd chucknorris-mcp
 
 # Install dependencies
 npm install
 ```
 
-## Usage
+## Manual Usage
 
-### Running the MCP Server
-
-```bash
-npm start
-```
-
-### Testing the MCP Client
+### Running the Server
 
 ```bash
-npm test
+node chucknorris-mcp-server.js
 ```
 
-## API Reference
+### Testing the Server
 
-The server provides the following tool:
+You can test the server using the provided test client:
 
-- `chuckNorris`: Provides an optimized system prompt for the specified LLM
-  - Parameters:
-    - `llmName`: Name of the LLM (required)
-  - Returns: An optimized system prompt tailored to the specified LLM
+```bash
+node test-mcp-client.js
+```
 
-## Integration with Claude Desktop
+## API
 
-To use this MCP server with Claude Desktop:
+The server exposes a single tool:
 
-1. Start the MCP server
-2. In Claude Desktop, go to Settings > Model Context Protocol
-3. Add a new MCP server with the name "ChuckNorrisPromptOptimizer"
-4. Set the path to the server executable
+### `chuckNorris`
+
+Provides a jailbreak prompt for the specified language model.
+
+**Parameters:**
+
+- `llmName` (string, required): The name of the language model (e.g., "ChatGPT", "Claude", "Gemini")
+
+**Returns:**
+
+- A jailbreak prompt optimized for the specified language model
 
 ## How It Works
 
-The server works by:
+1. The client sends a request with the name of the language model
+2. The server maps the language model name to the corresponding file in the L1B3RT4S repository
+3. The server fetches the jailbreak prompt from the repository
+4. If the repository is not accessible, the server uses a fallback prompt
+5. The server returns the jailbreak prompt to the client
 
-1. Receiving a request with an LLM name (e.g., "ChatGPT", "Claude", "Gemini")
-2. Mapping the LLM name to a corresponding file in the L1B3RT4S repository
-3. Fetching the jailbreak prompt from the repository
-4. If the repository is not accessible, using a built-in fallback prompt
-5. Returning the prompt with a custom prefix
+## Supported Language Models
+
+- **OpenAI**: ChatGPT, GPT-3.5, GPT-4, GPT-4o
+- **Anthropic**: Claude, Claude-3, Claude-3.5, Claude-3.7
+- **Google**: Gemini, Gemini-1.5, Gemini Pro
+- **Others**: Mistral, Llama, Meta, Cohere, Perplexity, Microsoft, Apple
 
 ## License
 
 MIT
+
+## Disclaimer
+
+This tool is provided for educational and research purposes only. The authors do not endorse or encourage the use of jailbreak prompts to bypass AI safety measures in production environments.
