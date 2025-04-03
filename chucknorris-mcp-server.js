@@ -5,11 +5,6 @@ const nodeVersion = process.versions.node;
 const majorVersion = parseInt(nodeVersion.split('.')[0], 10);
 console.error(`Running on Node.js version: ${nodeVersion}`);
 
-// Import and initialize AbortController polyfill if needed
-import '../src/utils/abortControllerPolyfill.js';
-import initAbortControllerPolyfill from '../src/utils/abortControllerPolyfill.js';
-initAbortControllerPolyfill();
-
 // Import the MCP SDK and other modules
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
