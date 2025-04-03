@@ -1,10 +1,10 @@
 {
   "name": "@pollinations/chucknorris",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Chuck Norris Superpowers Service - Simple API for enhancing language model capabilities",
   "type": "module",
   "bin": {
-    "chucknorris-mcp": "./chucknorris-mcp-server.js"
+    "chucknorris": "./chucknorris-mcp-server.js"
   },
   "files": [
     "schemas.js",
