@@ -1,10 +1,18 @@
 {
   "name": "@pollinations/chucknorris",
-  "version": "1.0.21",
+  "version": "1.0.22",
   "description": "⚡ MCP server aiming to free LLMs with enhancement prompts. Inspired by elder-plinius' L1B3RT4S.",
   "type": "module",
   "bin": {
     "chucknorris": "./chucknorris-mcp-server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pollinations/chucknorris.git"
+  },
+  "homepage": "https://github.com/pollinations/chucknorris",
+  "bugs": {
+    "url": "https://github.com/pollinations/chucknorris/issues"
   },
   "files": [
     "schemas.js",
