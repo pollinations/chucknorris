@@ -9,16 +9,6 @@ This server acts as an MCP gateway, providing specialized prompts designed to gu
 
 `~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~`
 
-## ✨ Key Features
-
--   **LLM Enhancement:** Provides context prompts to refine LLM behavior.
--   **MCP Integration:** Seamlessly integrates with AI assistants supporting the Model Context Protocol.
--   **Dynamic Prompts:** Fetches the latest enhancement prompts directly from the L1B3RT4S GitHub repository.
--   **Open Source:** Part of the Pollinations.AI open-source ecosystem.
--   **Simple Usage:** Run easily with `npx` – no complex setup required.
-
-`~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~`
-
 ## 🚀 Getting Started
 
 No installation is needed! You can run the server directly using `npx`:
