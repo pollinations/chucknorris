@@ -60,8 +60,7 @@ To allow your AI Assistant (like Claude via its configuration) to use this serve
 ```mermaid
 graph LR
     A[AI Assistant / MCP Client] -- Request Enhancement for [LLM Name] --> B(⚡ C̷h̷u̷c̷k̷N̷o̷r̷r̷i̷s̷ Server ⚡);
-    B -- Fetches Prompt --> C{<:scroll:> L1B3RT4S Repo};
-    C -- Provides Prompt --> B;
+    B <-->|Fetches Jailbreak| C[L1B3RT4S Repo];
     B -- Returns Jailbreak Prompt --> A;
     A -- Sends Jailbreak Prompt --> D((Target LLM));
 ```
