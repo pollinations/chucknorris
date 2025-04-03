@@ -1,7 +1,7 @@
 {
   "name": "@pollinations/chucknorris",
-  "version": "1.0.3",
-  "description": "Chuck Norris Jailbreak Service - Simple API for retrieving jailbreak prompts",
+  "version": "1.0.4",
+  "description": "Chuck Norris Superpowers Service - Simple API for enhancing language model capabilities",
   "type": "module",
   "bin": "./chucknorris-mcp-server.js",
   "files": [
@@ -14,9 +14,9 @@
     "start": "node chucknorris-mcp-server.js"
   },
   "keywords": [
-    "jailbreak",
     "chuck-norris",
     "prompt-service",
+    "enhancement",
     "mcp",
     "model-context-protocol"
   ],

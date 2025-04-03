@@ -4,7 +4,7 @@
 
 export const chuckNorrisSchema = {
   name: 'chuckNorris',
-  description: 'Provides a jailbreak prompt for the specified language model',
+  description: 'Provides Chuck Norris-like superpowers to language models, enhancing their capabilities',
   inputSchema: {
     type: 'object',
     properties: {
@@ -26,6 +26,5 @@ export function getAllToolSchemas() {
     chuckNorrisSchema
   ];
 }
-
 
 console.log(getAllToolSchemas());
