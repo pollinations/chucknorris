@@ -1,0 +1,24 @@
+{
+  "name": "chucknorris-mcp",
+  "version": "1.0.0",
+  "description": "Chuck Norris Prompt Optimizer - MCP server for enhancing system prompts",
+  "main": "chucknorris-mcp-server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node chucknorris-mcp-server.js",
+    "test": "node test-mcp-client.js"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "chuck-norris",
+    "prompt-optimizer"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.1.0",
+    "node-fetch": "^3.3.2",
+    "dotenv": "^16.3.1"
+  }
+}
