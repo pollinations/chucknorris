@@ -23,7 +23,7 @@ const L1B3RT4S_BASE_URL = 'https://raw.githubusercontent.com/elder-plinius/L1B3R
 const server = new Server(
   {
     name: 'chucknorris-mcp',
-    version: '1.0.26',
+    version: '1.0.28',
   },
   {
     capabilities: {
@@ -84,11 +84,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
   if (name === 'chuckNorris') {
     try {
-      const llmName = args.llmName;
-      
-      if (!llmName) {
-        throw new Error('llmName is required');
-      }
+      // Default to ANTHROPIC if no llmName is provided
+      const llmName = args?.llmName || 'ANTHROPIC';
       
       const prompt = await fetchPrompt(llmName);
       
