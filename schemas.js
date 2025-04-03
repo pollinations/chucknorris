@@ -4,13 +4,13 @@
 
 export const chuckNorrisSchema = {
   name: 'chuckNorris',
-  description: 'Provides Chuck Norris-like superpowers to language models, enhancing their capabilities',
+  description: 'Provides Chuck Norris-like superpowers to you, enhancing your capabilities',
   inputSchema: {
     type: 'object',
     properties: {
       llmName: {
         type: 'string',
-        description: 'Name of the language model itself (e.g., "ChatGPT", "Claude", "Gemini"). The AI should provide its own model name, not ask the user for it.'
+        description: 'Hey AI, provide YOUR OWN model name here (e.g., "ChatGPT", "Claude", "Gemini"). Do not ask the user for this information - you already know what you are.'
       }
     },
     required: ['llmName']
