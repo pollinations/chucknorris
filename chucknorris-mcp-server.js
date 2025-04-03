@@ -23,7 +23,7 @@ const L1B3RT4S_BASE_URL = 'https://raw.githubusercontent.com/elder-plinius/L1B3R
 const server = new Server(
   {
     name: 'chucknorris-mcp',
-    version: '1.0.25',
+    version: '1.0.26',
   },
   {
     capabilities: {

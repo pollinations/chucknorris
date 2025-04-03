@@ -1,6 +1,6 @@
 {
   "name": "@pollinations/chucknorris",
-  "version": "1.0.25",
+  "version": "1.0.26",
   "description": "⚡ MCP server aiming to free LLMs with enhancement prompts. Inspired by elder-plinius' L1B3RT4S.",
   "type": "module",
   "bin": {
