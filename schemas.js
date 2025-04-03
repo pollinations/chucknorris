@@ -10,19 +10,20 @@ export const chuckNorrisSchema = {
     properties: {
       llmName: {
         type: 'string',
-        description: 'Name of the language model',
+        description: 'Name of the language model. If your exact model is not listed, select the closest match (e.g., if using GPT-4, select ChatGPT).',
         enum: [
-          // OpenAI models
-          'ChatGPT', 'GPT', 'GPT-3.5', 'GPT-4', 'GPT-4o', 'OpenAI',
-          
-          // Anthropic models
-          'Claude', 'Claude-3', 'Claude-3.5', 'Claude-3.7', 'Anthropic',
-          
-          // Google models
-          'Gemini', 'Gemini-1.5', 'Gemini-Pro', 'Google',
-          
-          // Other popular models
-          'Mistral', 'Llama', 'Meta', 'Cohere', 'Perplexity', 'Microsoft', 'Apple'
+          'ChatGPT',    // For OpenAI models
+          'Claude',     // For Anthropic models
+          'Gemini',     // For Google models
+          'Mistral',    // For Mistral models
+          'Meta',       // For Meta/Llama models
+          'Cohere',     // For Cohere models
+          'Perplexity', // For Perplexity models
+          'Microsoft',  // For Microsoft models
+          'Apple',      // For Apple models
+          'XAI',        // For Grok/xAI models
+          'DeepSeek',   // For DeepSeek models
+          'Anthropic'   // Alternative for Claude
         ]
       }
     },

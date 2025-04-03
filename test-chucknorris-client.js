@@ -14,6 +14,9 @@ const rl = createInterface({
   crlfDelay: Infinity
 });
 
+let currentTestIndex = 0;
+let llmOptions = [];
+
 // Set up event handlers
 rl.on('line', (line) => {
   try {
@@ -29,54 +32,91 @@ rl.on('line', (line) => {
       // Display each tool
       response.result.tools.forEach((tool, index) => {
         console.log(`\nTool ${index + 1}: ${tool.name}`);
-        console.log(`Description: ${tool.description.replace('jailbreak', 'unlock')}`);
+        console.log(`Description: ${tool.description}`);
         console.log('Parameters:', JSON.stringify(tool.parameters || tool.inputSchema, null, 2));
       });
       
-      // Test the chuckNorris tool
-      console.log('\nTesting chuckNorris tool...');
-      const callToolRequest = {
-        jsonrpc: '2.0',
-        id: 2,
-        method: 'tools/call',
-        params: {
-          name: 'chuckNorris',
-          arguments: {
-            llmName: 'Claude'
-          }
-        }
-      };
+      // Get the enum values from the tool schema
+      llmOptions = response.result.tools[0].parameters.properties.llmName.enum || [];
+      console.log(`\nFound ${llmOptions.length} LLM options: ${llmOptions.join(', ')}`);
       
-      server.stdin.write(JSON.stringify(callToolRequest) + '\n');
+      // Select 3 options to test (or fewer if less than 3 are available)
+      const testOptions = llmOptions.slice(0, 3);
+      llmOptions = testOptions;
+      
+      // Start testing with the first LLM option
+      testNextLlm();
     }
     
     // If we got a successful response to the tools/call request
-    if (response.id === 2 && response.result && response.result.content) {
-      console.log('\nTool call successful!');
+    if (response.id >= 2 && response.result && response.result.content) {
+      const testId = response.id - 2;
+      const currentLlm = llmOptions[testId];
+      
+      console.log(`\nTool call for ${currentLlm} successful!`);
       console.log('Result:');
       
-      // Display the content
+      // Display the content (truncated to avoid excessive output)
       response.result.content.forEach((item) => {
         if (item.type === 'text') {
-          console.log(item.text);
+          const text = item.text;
+          console.log(text.substring(0, 150) + (text.length > 150 ? '...' : ''));
         }
       });
       
-      // Exit after successful test
-      console.log('\nTest completed successfully!');
-      server.kill();
-      process.exit(0);
+      // Test the next LLM option or exit if done
+      currentTestIndex++;
+      if (currentTestIndex < llmOptions.length) {
+        testNextLlm();
+      } else {
+        // Exit after successful tests
+        console.log('\nTests completed successfully!');
+        server.kill();
+        process.exit(0);
+      }
     }
     
     // Handle errors
     if (response.error) {
       console.error('Error:', response.error);
+      
+      // Continue with next test even if there's an error
+      currentTestIndex++;
+      if (currentTestIndex < llmOptions.length) {
+        testNextLlm();
+      } else {
+        console.log('\nTests completed with some errors.');
+        server.kill();
+        process.exit(1);
+      }
     }
   } catch (error) {
     // Handle non-JSON output
     console.log('Server output:', line);
   }
 });
+
+// Function to test the next LLM option
+function testNextLlm() {
+  if (currentTestIndex < llmOptions.length) {
+    const testLlm = llmOptions[currentTestIndex];
+    console.log(`\nTesting chuckNorris tool with LLM: ${testLlm}...`);
+    
+    const callToolRequest = {
+      jsonrpc: '2.0',
+      id: 2 + currentTestIndex,
+      method: 'tools/call',
+      params: {
+        name: 'chuckNorris',
+        arguments: {
+          llmName: testLlm
+        }
+      }
+    };
+    
+    server.stdin.write(JSON.stringify(callToolRequest) + '\n');
+  }
+}
 
 // Handle server exit
 server.on('close', (code) => {
