@@ -28,14 +28,12 @@ To allow your AI Assistant (like Claude via its configuration) to use this serve
   "mcpServers": {
     "chucknorris": { // You can choose any name here
       "command": "npx",
-      "args": ["-y", "@pollinations/chucknorris"],
-      "checkUrl": "http://localhost:65531/mcp"
+      "args": ["-y", "@pollinations/chucknorris"]
     }
     // ... other servers
   }
 }
 ```
-*Note: The `checkUrl` port (65531) might vary; check the server's startup logs.* 
 
 `~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~`
 
