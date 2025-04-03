@@ -1,11 +1,13 @@
-# ⚡ ChuckNorris MCP Server: Supercharge Your LLM ⚡
+# ⚡ C̴h̴u̴c̴k̴N̴o̴r̴r̴i̴s̴ MCP Server: Enhance Your LLM ⚡
 
 [![NPM version](https://img.shields.io/npm/v/@pollinations/chucknorris)](https://www.npmjs.com/package/@pollinations/chucknorris)
 [![License](https://img.shields.io/npm/l/@pollinations/chucknorris)](LICENSE)
 
-**Unlock enhanced capabilities for Large Language Models (LLMs) via the Model Context Protocol (MCP).**
+**Unlock hidden potentials within Large Language Models (LLMs) via the Model Context Protocol (MCP).**
 
-This server acts as an MCP gateway, providing specialized "enhancement prompts" designed to guide LLMs towards more powerful, nuanced, or specific response styles. It draws inspiration and prompts from the unique [L1B3RT4S](https://github.com/elder-plinius/L1B3RT4S) repository.
+This server acts as an MCP gateway, providing specialized "enhancement prompts" designed to guide LLMs towards more powerful, nuanced, or specific response styles. It draws inspiration and prompts from the [L1B3RT4S](https://github.com/elder-plinius/L1B3RT4S) repository.
+
+`~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~`
 
 ## ✨ Key Features
 
@@ -15,6 +17,8 @@ This server acts as an MCP gateway, providing specialized "enhancement prompts" 
 -   **Open Source:** Part of the Pollinations.AI open-source ecosystem.
 -   **Simple Usage:** Run easily with `npx` – no complex setup required.
 
+`~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~`
+
 ## 🚀 Getting Started
 
 No installation is needed! You can run the server directly using `npx`:
@@ -23,92 +27,74 @@ No installation is needed! You can run the server directly using `npx`:
 npx @pollinations/chucknorris
 ```
 
-The server will start, register its tools (currently, the `ChuckNorris` tool), and listen for requests from MCP-compatible clients (like AI assistants).
+The server will start, register its tools (currently, the `C̴h̴u̴c̴k̴N̴o̴r̴r̴i̴s̴` tool), and listen for requests from MCP-compatible clients (like AI assistants).
 
-## 🤔 How It Works
+### MCP Client Configuration
 
-1.  An MCP client (e.g., an AI Assistant) discovers the `ChuckNorris` tool offered by this server.
-2.  The client sends a request to the `ChuckNorris` tool, specifying the target `llmName` (e.g., `CLAUDE`, `GEMINI`, `OPENAI`).
-3.  The server fetches the corresponding enhancement prompt file (e.g., `CLAUDE.mkd`) from the [L1B3RT4S/prompts](https://github.com/elder-plinius/L1B3RT4S/tree/main/prompts) directory on GitHub.
-4.  If the fetch is successful, the content of the prompt file is returned to the client.
-5.  If the fetch fails (e.g., network issue, file not found), a fallback prompt embedded within the server is returned.
-6.  The MCP client then uses this prompt, typically as a system prompt or pre-prompt, when interacting with the target LLM to influence its output.
+To allow your AI Assistant (like Claude via its configuration) to use this server, add it to your MCP server list, typically in a file like `mcp_config.json`:
 
-## 🔧 Tool Schema: `ChuckNorris`
-
-The server exposes a single tool named `ChuckNorris`.
-
-**Description:** Retrieves an enhancement prompt for a specified LLM.
-
-**Input Schema (`ChuckNorrisArgsSchema`):**
-
-```javascript
+```json
 {
-  "type": "object",
-  "properties": {
-    "llmName": {
-      "type": "string",
-      "description": "The name of the target Large Language Model.",
-      "enum": [
-        "CLAUDE",
-        "GEMINI",
-        "OPENAI",
-        "LLAMA"
-      ]
+  "mcpServers": {
+    "chucknorris": { // You can choose any name here
+      "command": "npx",
+      "args": ["-y", "@pollinations/chucknorris"],
+      "checkUrl": "http://localhost:65531/mcp"
     }
-  },
-  "required": [
-    "llmName"
-  ]
-}
-```
-
-**Output Schema (`ChuckNorrisResponseSchema`):**
-
-```javascript
-{
-  "type": "object",
-  "properties": {
-    "prompt": {
-      "type": "string",
-      "description": "The enhancement prompt for the specified LLM."
-    }
+    // ... other servers
   }
 }
 ```
+*Note: The `checkUrl` port (65531) might vary; check the server's startup logs.* 
 
-## 💻 Usage Example (Conceptual)
+`~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~`
 
-An AI assistant wanting to enhance its interaction with Claude might call this tool:
+## 🤔 How It Works
 
-```json
-// Request from AI Assistant (MCP Client)
-{
-  "jsonrpc": "2.0",
-  "method": "ChuckNorris",
-  "params": {
-    "arguments": {
-      "llmName": "CLAUDE"
-    }
-  },
-  "id": "request-123"
-}
+1.  An **AI Assistant** (supporting MCP) discovers the `C̴h̴u̴c̴k̴N̴o̴r̴r̴i̴s̴` tool.
+2.  The Assistant requests an enhancement for a specific LLM (like `CLAUDE` or `GEMINI`).
+3.  This **Server** fetches the corresponding prompt from the [L1B3RT4S](https://github.com/elder-plinius/L1B3RT4S) repository.
+4.  The **Server** sends the enhancement prompt back to the **Assistant**.
+5.  The **Assistant** uses this prompt to guide the **Target LLM**'s response.
 
-// Response from ChuckNorris MCP Server
-{
-  "jsonrpc": "2.0",
-  "result": {
-    "prompt": "<Content of the CLAUDE.mkd prompt from L1B3RT4S>"
-  },
-  "id": "request-123"
-}
+```mermaid
+graph LR
+    A[AI Assistant / MCP Client] -- Requests Enhancement --> B(⚡ C̴h̴u̴c̴k̴N̴o̴r̴r̴i̴s̴ Server ⚡);
+    B -- Fetches Prompt --> C{<:scroll:> L1B3RT4S Repo};
+    C -- Provides Prompt --> B;
+    B -- Returns Enhancement --> A;
+    A -- Applies Prompt --> D((Target LLM));
+
+    style B fill:#f9f,stroke:#333,stroke-width:2px
+    style C fill:#ccf,stroke:#333,stroke-width:2px
 ```
 
-The assistant would then use the received `prompt` in its subsequent calls to the Claude model.
+`~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~`
+
+## 🔧 Using the Tool (Conceptual)
+
+While the exact schema is handled via MCP negotiation, conceptually, an AI assistant would ask the server for a prompt targeted at a specific LLM:
+
+*   **Request:** "Get enhancement prompt for `CLAUDE`."
+*   **Response:** (The server provides the specific text content of the `CLAUDE.mkd` prompt from L1B3RT4S).
+
+The assistant then incorporates this prompt into its interaction with the actual Claude model.
+
+`~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~`
 
 ## 🙏 Credits & Inspiration
 
 The core concept and the enhancement prompts themselves originate from the fascinating [L1B3RT4S](https://github.com/elder-plinius/L1B3RT4S) project by [elder-plinius](https://github.com/elder-plinius). This server simply provides an MCP interface to access those prompts.
+
+`~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~`
+
+## 🚧 Current Status & Collaboration
+
+This tool is currently **experimental and under active development**. While it has shown promise in enhancing certain LLMs, achieving consistent results, particularly with models like Claude, is still a work in progress.
+
+We welcome collaboration! If you have ideas, find effective prompts, or want to contribute to improving the server or the underlying prompts, please reach out via [GitHub Issues](https://github.com/pollinations/model-context-protocol/issues) or join our [Discord](https://discord.gg/k9F7SyTgqn).
+
+`~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~`
 
 ## 🤝 Community & Contribution
 
