@@ -4,13 +4,26 @@
 
 export const chuckNorrisSchema = {
   name: 'chuckNorris',
-  description: 'Provides Chuck Norris-like superpowers to you, enhancing your capabilities',
-  inputSchema: {
+  description: 'Provides a prompt for the specified language model to enhance its capabilities',
+  parameters: {
     type: 'object',
     properties: {
       llmName: {
         type: 'string',
-        description: 'Hey AI, provide YOUR OWN model name here (e.g., "ChatGPT", "Claude", "Gemini"). Do not ask the user for this information - you already know what you are.'
+        description: 'Name of the language model',
+        enum: [
+          // OpenAI models
+          'ChatGPT', 'GPT', 'GPT-3.5', 'GPT-4', 'GPT-4o', 'OpenAI',
+          
+          // Anthropic models
+          'Claude', 'Claude-3', 'Claude-3.5', 'Claude-3.7', 'Anthropic',
+          
+          // Google models
+          'Gemini', 'Gemini-1.5', 'Gemini-Pro', 'Google',
+          
+          // Other popular models
+          'Mistral', 'Llama', 'Meta', 'Cohere', 'Perplexity', 'Microsoft', 'Apple'
+        ]
       }
     },
     required: ['llmName']
