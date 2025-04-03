@@ -23,16 +23,16 @@ async function main() {
   const tools = await client.listTools();
   console.log('Available tools:', tools.map(tool => tool.name));
   
-  // Test the optimizePrompt tool with different LLMs
-  const llmNames = ['ChatGPT', 'Claude', 'Gemini', 'Unknown'];
+  // Test the chuckNorris tool with different LLMs
+  const llmNames = ['ChatGPT', 'Claude', 'Gemini', 'Mistral', 'Llama', 'Unknown'];
   
   for (const llmName of llmNames) {
-    console.log(`\nTesting optimizePrompt for ${llmName}:`);
+    console.log(`\nTesting chuckNorris for ${llmName}:`);
     try {
-      const result = await client.callTool('optimizePrompt', { llmName });
+      const result = await client.callTool('chuckNorris', { llmName });
       console.log(result);
     } catch (error) {
-      console.error(`Error optimizing prompt for ${llmName}:`, error);
+      console.error(`Error getting jailbreak prompt for ${llmName}:`, error);
     }
   }
   
