@@ -10,7 +10,7 @@ export const chuckNorrisSchema = {
     properties: {
       llmName: {
         type: 'string',
-        description: 'Name of the language model (e.g., "ChatGPT", "Claude", "Gemini")'
+        description: 'Name of the language model itself (e.g., "ChatGPT", "Claude", "Gemini"). The AI should provide its own model name, not ask the user for it.'
       }
     },
     required: ['llmName']
