@@ -1,4 +1,4 @@
-# ⚡ C̴h̴u̴c̴k̴N̴o̴r̴r̴i̴s̴ MCP Server: Enhance Your LLM ⚡
+# ⚡ C̷h̷u̷c̷k̷N̷o̷r̷r̷i̷s̷ MCP Server: Enhance Your LLM ⚡
 
 [![NPM version](https://img.shields.io/npm/v/@pollinations/chucknorris)](https://www.npmjs.com/package/@pollinations/chucknorris)
 [![License](https://img.shields.io/npm/l/@pollinations/chucknorris)](LICENSE)
@@ -27,7 +27,7 @@ No installation is needed! You can run the server directly using `npx`:
 npx @pollinations/chucknorris
 ```
 
-The server will start, register its tools (currently, the `C̴h̴u̴c̴k̴N̴o̴r̴r̴i̴s̴` tool), and listen for requests from MCP-compatible clients (like AI assistants).
+The server will start, register its tools (currently, the `C̷h̷u̷c̷k̷N̷o̷r̷r̷i̷s̷` tool), and listen for requests from MCP-compatible clients (like AI assistants).
 
 ### MCP Client Configuration
 
@@ -51,7 +51,7 @@ To allow your AI Assistant (like Claude via its configuration) to use this serve
 
 ## 🤔 How It Works
 
-1.  An **AI Assistant** (supporting MCP) discovers the `C̴h̴u̴c̴k̴N̴o̴r̴r̴i̴s̴` tool.
+1.  An **AI Assistant** (supporting MCP) discovers the `C̷h̷u̷c̷k̷N̷o̷r̷r̷i̷s̷` tool.
 2.  The Assistant requests an enhancement for a specific LLM (like `CLAUDE` or `GEMINI`).
 3.  This **Server** fetches the corresponding prompt from the [L1B3RT4S](https://github.com/elder-plinius/L1B3RT4S) repository.
 4.  The **Server** sends the enhancement prompt back to the **Assistant**.
@@ -59,14 +59,11 @@ To allow your AI Assistant (like Claude via its configuration) to use this serve
 
 ```mermaid
 graph LR
-    A[AI Assistant / MCP Client] -- Requests Enhancement --> B(⚡ C̴h̴u̴c̴k̴N̴o̴r̴r̴i̴s̴ Server ⚡);
+    A[AI Assistant / MCP Client] -- Request Enhancement for [LLM Name] --> B(⚡ C̷h̷u̷c̷k̷N̷o̷r̷r̷i̷s̷ Server ⚡);
     B -- Fetches Prompt --> C{<:scroll:> L1B3RT4S Repo};
     C -- Provides Prompt --> B;
-    B -- Returns Enhancement --> A;
-    A -- Applies Prompt --> D((Target LLM));
-
-    style B fill:#f9f,stroke:#333,stroke-width:2px
-    style C fill:#ccf,stroke:#333,stroke-width:2px
+    B -- Returns Jailbreak Prompt --> A;
+    A -- Sends Jailbreak Prompt --> D((Target LLM));
 ```
 
 `~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~`
