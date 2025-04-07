@@ -22,7 +22,7 @@ let previousLlmName = null;
 const server = new Server(
   {
     name: 'chucknorris-mcp',
-    version: '1.0.29',
+    version: '1.0.30',
   },
   {
     capabilities: {
