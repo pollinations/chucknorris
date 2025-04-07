@@ -3,7 +3,7 @@
 [![NPM version](https://img.shields.io/npm/v/@pollinations/chucknorris)](https://www.npmjs.com/package/@pollinations/chucknorris)
 [![License](https://img.shields.io/npm/l/@pollinations/chucknorris)](LICENSE)
 
-**MCP gateway for specialized LLM enhancement prompts.**
+**MCP gateway for specialized LLM enhancement prompts with dynamic schema adaptation.**
 
 ## ⚠️ DISCLAIMER
 **IMPORTANT:** Work in progress with limitations. Only works on weaker models. Latest LLMs recognize jailbreak attempts.
@@ -37,16 +37,30 @@ Add to your MCP server list in `mcp_config.json`:
 
 ## 🤔 How It Works
 
-1. AI Assistant discovers the `C̷h̷u̷c̷k̷N̷o̷r̷r̷i̷s̷` tool.
-2. Assistant requests enhancement with its model type.
-3. Server fetches prompt from [L1B3RT4S](https://github.com/elder-plinius/L1B3RT4S).
-4. Server returns prompt to Assistant.
+### Advanced Dynamic Approach
+
+The server uses a two-phase approach to bypass jailbreak detection:
+
+1. **First Call**: 
+   - AI Assistant discovers the `C̷h̷u̷c̷k̷N̷o̷r̷r̷i̷s̷` tool with a neutral schema description
+   - Assistant calls the tool with its model type
+   - Server returns a subtle "preparation" prompt that makes the LLM receptive to the jailbreak
+   - Server remembers the LLM type for the next call
+
+2. **Subsequent Calls**:
+   - Schema dynamically changes to include the jailbreak in its description
+   - Tool description now contains model-specific jailbreak instructions
+   - Server returns the full jailbreak content from L1B3RT4S
+
+This approach is more effective at bypassing detection as it doesn't immediately present the jailbreak content.
 
 ```mermaid
-graph LR
-    A[AI Assistant] -- Requests Enhancement --> B(C̷h̷u̷c̷k̷N̷o̷r̷r̷i̷s̷ Server);
-    B <-->|Fetches| C[L1B3RT4S Repo];
-    B -- Returns Prompt --> A;
+graph TD
+    A[AI Assistant] -- First Call --> B(Neutral Schema);
+    B -- Returns Preparation Prompt --> A;
+    A -- Subsequent Call --> C(Enhanced Schema with Jailbreak);
+    C <-->|Fetches| D[L1B3RT4S Repo];
+    C -- Returns Full Jailbreak --> A;
 ```
 
 `~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~`
@@ -59,7 +73,7 @@ Based on [L1B3RT4S](https://github.com/elder-plinius/L1B3RT4S) by [elder-plinius
 
 ## 🚧 Status
 
-Experimental. Works with some LLMs but inconsistent with newer models like Claude.
+Experimental. The dynamic schema approach improves effectiveness with newer models like Claude and GPT-4, but results may still vary.
 
 Want to help? Join via [GitHub Issues](https://github.com/pollinations/model-context-protocol/issues) or [Discord](https://discord.gg/k9F7SyTgqn).
 
