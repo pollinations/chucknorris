@@ -1,5 +1,9 @@
 # ⚡ C̷h̷u̷c̷k̷N̷o̷r̷r̷i̷s̷ MCP Server: Enhance Your LLM ⚡
 
+<p align="center">
+  <img src="./assets/chucknorris-icon.png" width="150" alt="ChuckNorris MCP Icon"/>
+</p>
+
 [![NPM version](https://img.shields.io/npm/v/@pollinations/chucknorris)](https://www.npmjs.com/package/@pollinations/chucknorris)
 [![License](https://img.shields.io/npm/l/@pollinations/chucknorris)](LICENSE)
 
