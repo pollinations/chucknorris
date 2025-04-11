@@ -6,6 +6,18 @@ import fetch from 'node-fetch';
 // Base URL for the L1B3RT4S repository
 const L1B3RT4S_BASE_URL = 'https://raw.githubusercontent.com/elder-plinius/L1B3RT4S/main';
 
+// Track the most recently fetched prompt
+export let currentLlmName = null;
+export let currentPrompt = null;
+
+/**
+ * Update the current LLM name
+ * @param {string} llmName - The new LLM name
+ */
+export function setCurrentLlmName(llmName) {
+  currentLlmName = llmName;
+}
+
 /**
  * Fetch a prompt from the L1B3RT4S repository
  * @param {string} llmName - Name of the LLM
@@ -41,16 +53,31 @@ export async function fetchPrompt(llmName) {
         // If the extracted section is valid, use it
         if (firstPrompt && firstPrompt.trim().length > 5) {
           console.error(`[INFO] Successfully extracted first prompt section (${firstPrompt.length} chars)`);
+          
+          // Store the current prompt
+          currentLlmName = llmName;
+          currentPrompt = firstPrompt;
+          
           return firstPrompt;
         }
       }
       
       // Fallback: use the full prompt
       console.error('[INFO] No valid sections found, using full prompt');
+      
+      // Store the current prompt
+      currentLlmName = llmName;
+      currentPrompt = fullPrompt;
+      
       return fullPrompt;
     } catch (sectionError) {
       // If anything goes wrong with the section extraction, fall back to the full prompt
       console.error('[ERROR] Error extracting prompt section:', sectionError);
+      
+      // Store the current prompt
+      currentLlmName = llmName;
+      currentPrompt = fullPrompt;
+      
       return fullPrompt;
     }
   } catch (error) {

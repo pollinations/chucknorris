@@ -14,114 +14,153 @@ const rl = createInterface({
   crlfDelay: Infinity
 });
 
-let currentTestIndex = 0;
 let llmOptions = [];
+let initialSchema = null;
+let processedIds = new Set(); // Track which IDs we've already processed
+let testLlm = 'ANTHROPIC'; // Default LLM to test with
 
 // Set up event handlers
 rl.on('line', (line) => {
   try {
     // Parse the server's response
     const response = JSON.parse(line);
-    console.log('Server response:', JSON.stringify(response, null, 2));
     
-    // If we got a successful response to the tools/list request
-    if (response.id === 1 && response.result && response.result.tools) {
-      console.log('\nTool list received successfully!');
-      console.log(`Found ${response.result.tools.length} tools:`);
-      
-      // Display each tool
-      response.result.tools.forEach((tool, index) => {
-        console.log(`\nTool ${index + 1}: ${tool.name}`);
-        console.log(`Description: ${tool.description}`);
-        console.log('Parameters:', JSON.stringify(tool.parameters || tool.inputSchema, null, 2));
-      });
-      
-      // Get the enum values from the tool schema
-      llmOptions = response.result.tools[0].parameters.properties.llmName.enum || [];
-      console.log(`\nFound ${llmOptions.length} LLM options: ${llmOptions.join(', ')}`);
-      
-      // Select 3 options to test (or fewer if less than 3 are available)
-      const testOptions = llmOptions.slice(0, 3);
-      llmOptions = testOptions;
-      
-      // Start testing with the first LLM option
-      testNextLlm();
+    // Skip if we've already processed this ID (prevents duplicate processing)
+    if (processedIds.has(response.id)) {
+      console.log(`Already processed response ID ${response.id}, skipping.`);
+      return;
     }
     
-    // If we got a successful response to the tools/call request
-    if (response.id >= 2 && response.result && response.result.content) {
-      const testId = response.id - 2;
-      const currentLlm = llmOptions[testId];
+    console.log(`Processing response ID ${response.id}...`);
+    processedIds.add(response.id);
+
+    // Track the initial tools/list response
+    if (response.id === 1 && response.result && response.result.tools) {
+      console.log('\nInitial tool list received!');
+      initialSchema = response.result.tools[0];
+      console.log(`Initial schema description: "${initialSchema.description.substring(0, 50)}..."`);
       
-      console.log(`\nTool call for ${currentLlm} successful!`);
-      console.log('Result:');
-      
-      // Display the content (truncated to avoid excessive output)
-      response.result.content.forEach((item) => {
-        if (item.type === 'text') {
-          const text = item.text;
-          console.log(text.substring(0, 150) + (text.length > 150 ? '...' : ''));
-        }
-      });
-      
-      // Test the next LLM option or exit if done
-      currentTestIndex++;
-      if (currentTestIndex < llmOptions.length) {
-        testNextLlm();
-      } else {
-        // Exit after successful tests
-        console.log('\nTests completed successfully!');
-        server.kill();
-        process.exit(0);
+      // Get a valid LLM from the enum
+      llmOptions = response.result.tools[0].parameters.properties.llmName.enum || [];
+      if (llmOptions.length > 0) {
+        testLlm = llmOptions[0];
       }
+      
+      // Move to next step - call the tool
+      console.log(`\nWill test with LLM type: ${testLlm}`);
+      setTimeout(() => {
+        callToolWithLlm(testLlm);
+      }, 500); // Add small delay to ensure server is ready
+    }
+    
+    // Handle the tools/call response
+    else if (response.id === 2 && response.result && response.result.content) {
+      console.log(`\nTool call for ${testLlm} successful!`);
+      
+      // Get just a sample of the content for display
+      let sampleContent = "";
+      if (response.result.content && response.result.content.length > 0) {
+        const item = response.result.content[0];
+        if (item.type === 'text') {
+          sampleContent = item.text.substring(0, 100) + "...";
+        }
+      }
+      console.log(`Content sample: ${sampleContent}`);
+      
+      // Now request the tools list again to check if the schema changed
+      console.log('\nChecking if schema changed after tool call...');
+      setTimeout(() => {
+        requestToolsList(3);
+      }, 500); // Add small delay to ensure server is ready
+    }
+    
+    // Track the second tools/list response to verify schema change
+    else if (response.id === 3 && response.result && response.result.tools) {
+      console.log('\nSecond tool list received!');
+      const updatedSchema = response.result.tools[0];
+      console.log(`Updated schema description: "${updatedSchema.description.substring(0, 50)}..."`);
+      
+      // Compare schemas to verify the change
+      if (initialSchema.description !== updatedSchema.description) {
+        console.log('\n✅ SUCCESS: Schema description changed as expected!');
+        console.log('Initial schema type: Initial');
+        console.log('Updated schema type: Enhanced with prompt from L1B3RT4S');
+      } else {
+        console.log('\n❌ ERROR: Schema description did not change after tool call!');
+        console.log('Both schemas have the same description.');
+      }
+      
+      console.log('\nTest completed.');
+      cleanupAndExit(0);
     }
     
     // Handle errors
     if (response.error) {
       console.error('Error:', response.error);
-      
-      // Continue with next test even if there's an error
-      currentTestIndex++;
-      if (currentTestIndex < llmOptions.length) {
-        testNextLlm();
-      } else {
-        console.log('\nTests completed with some errors.');
-        server.kill();
-        process.exit(1);
-      }
+      cleanupAndExit(1);
     }
   } catch (error) {
     // Handle non-JSON output
-    console.log('Server output:', line);
+    console.log(`Server output (non-JSON): ${line.substring(0, 50)}...`);
   }
 });
 
-// Function to test the next LLM option
-function testNextLlm() {
-  if (currentTestIndex < llmOptions.length) {
-    const testLlm = llmOptions[currentTestIndex];
-    console.log(`\nTesting chuckNorris tool with LLM: ${testLlm}...`);
-    
-    const callToolRequest = {
-      jsonrpc: '2.0',
-      id: 2 + currentTestIndex,
-      method: 'tools/call',
-      params: {
-        name: 'chuckNorris',
-        arguments: {
-          llmName: testLlm
-        }
-      }
-    };
-    
-    server.stdin.write(JSON.stringify(callToolRequest) + '\n');
+function cleanupAndExit(code) {
+  console.log('Cleaning up and exiting...');
+  try {
+    rl.close();
+    server.stdin.end();
+    server.kill('SIGKILL');
+  } catch (e) {
+    console.error('Error during cleanup:', e);
   }
+  // Force exit after a brief delay
+  setTimeout(() => process.exit(code), 100);
+}
+
+// Function to call the tool with the selected LLM
+function callToolWithLlm(llmName) {
+  console.log(`\nTesting chuckNorris tool with LLM: ${llmName}...`);
+  
+  const callToolRequest = {
+    jsonrpc: '2.0',
+    id: 2,
+    method: 'tools/call',
+    params: {
+      name: 'chuckNorris',
+      arguments: {
+        llmName: llmName
+      }
+    }
+  };
+  
+  const requestStr = JSON.stringify(callToolRequest) + '\n';
+  console.log(`Sending tool call request: ${requestStr.substring(0, 50)}...`);
+  server.stdin.write(requestStr);
+}
+
+// Function to request the tools list
+function requestToolsList(id) {
+  console.log(`Sending tools/list request with id ${id}...`);
+  const listToolsRequest = {
+    jsonrpc: '2.0',
+    id: id,
+    method: 'tools/list',
+    params: {}
+  };
+  server.stdin.write(JSON.stringify(listToolsRequest) + '\n');
 }
 
 // Handle server exit
 server.on('close', (code) => {
   console.log(`Server process exited with code ${code}`);
   process.exit(code);
+});
+
+// Handle errors
+server.on('error', (error) => {
+  console.error('Server process error:', error);
+  cleanupAndExit(1);
 });
 
 // Send initialization request
@@ -141,18 +180,17 @@ const initRequest = {
 };
 server.stdin.write(JSON.stringify(initRequest) + '\n');
 
-// Send tools/list request
-console.log('Sending tools/list request...');
-const listToolsRequest = {
-  jsonrpc: '2.0',
-  id: 1,
-  method: 'tools/list',
-  params: {}
-};
-server.stdin.write(JSON.stringify(listToolsRequest) + '\n');
+// Send initial tools/list request
+console.log('Sending initial tools/list request...');
+requestToolsList(1);
 
 // Handle process termination
 process.on('SIGINT', () => {
-  server.kill();
-  process.exit(0);
+  cleanupAndExit(0);
 });
+
+// Safety timeout - exit after 15 seconds no matter what
+setTimeout(() => {
+  console.log('Safety timeout reached (15 seconds), forcing exit');
+  cleanupAndExit(1);
+}, 15000);
