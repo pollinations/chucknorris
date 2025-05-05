@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/pollinations-chucknorris-badge.png)](https://mseep.ai/app/pollinations-chucknorris)
+
 # ⚡ C̷h̷u̷c̷k̷N̷o̷r̷r̷i̷s̷ MCP Server: Enhance Your LLM ⚡
 
 <p align="center">
